@@ -15,11 +15,14 @@ const Register = () => {
   const handleSubmit = async (event: FormEvent) => {
     event.preventDefault();
     try {
+      console.log(email, password, username);
       const res = await axios.post('/auth/register', {
         email,
         password,
         username,
       });
+      
+      router.push('/');
     } catch (error: any) {
       console.log('error', error);
       setErrors(error.response.data || {});

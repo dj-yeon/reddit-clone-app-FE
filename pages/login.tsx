@@ -3,11 +3,14 @@ import React, { FormEvent, useState } from 'react';
 import InputGroup from './components/InputGroup';
 import axios from 'axios';
 import { useRouter } from 'next/router';
+import { useAuthDispatch } from '@/context/auth';
 
 const Login = () => {
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
   const [errors, setErrors] = useState<any>({});
+
+  const dispatch = useAuthDispatch();
 
   let router = useRouter();
 
@@ -24,9 +27,12 @@ const Login = () => {
           withCredentials: true,
         },
       );
+      dispatch('LOGIN', res.data?.user);
+
+      router.push('/');
     } catch (error: any) {
       console.log('error', error);
-      setErrors(error.response.data || {});
+      setErrors(error.response?.data || {});
     }
   };
 
@@ -54,7 +60,7 @@ const Login = () => {
           </form>
           <small>
             아직 아이디가 없나요?
-            <Link href="/login" className="ml-1 text-blue-500 uppercase">
+            <Link href="/register" className="ml-1 text-blue-500 uppercase">
               회원가입
             </Link>
           </small>
